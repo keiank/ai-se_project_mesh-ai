@@ -17,3 +17,6 @@ dist
 
 # Secrets
 .env
+
+# Project design docs
+*.pdf
