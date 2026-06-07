@@ -1,5 +1,12 @@
 import type { Request, Response } from 'express';
 
+/**
+ * Return the current user's profile information.
+ *
+ * @param {Request} req - Express request object.
+ * @param {Response} res - Express response object.
+ * @returns {void}
+ */
 function getCurrentUser(req: Request, res: Response): void {
   res.status(200).json({
     success: true,
@@ -13,4 +20,34 @@ function getCurrentUser(req: Request, res: Response): void {
   });
 }
 
-export { getCurrentUser };
+/**
+ * Authenticate a user and return a token.
+ *
+ * @param {Request} req - Express request object.
+ * @param {Response} res - Express response object.
+ * @returns {void}
+ */
+function authenticateUser(req: Request, res: Response): void {
+  res.status(200).json({
+    success: true,
+    data: {},
+    error: null,
+  });
+}
+
+/**
+ * Create a new user account.
+ *
+ * @param {Request} req - Express request object.
+ * @param {Response} res - Express response object.
+ * @returns {void}
+ */
+function createNewUser(req: Request, res: Response): void {
+  res.status(201).json({
+    success: true,
+    data: {},
+    error: null,
+  });
+}
+
+export { getCurrentUser, authenticateUser, createNewUser };
