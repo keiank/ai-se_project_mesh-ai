@@ -19,8 +19,7 @@ function notFoundHandler(req: Request, res: Response): void {
 /**
  * Error-handling middleware.
  * Logs the error to the console and sends a JSON response with an appropriate
- * status code and message. If `err.statusCode` is present it will be used,
- * otherwise 500 is used with a generic server error message.
+ * status code and message.
  *
  * @param {Error & { statusCode: number }} err - Error object, optionally with a `statusCode`.
  * @param {Request} req - Express request object.
