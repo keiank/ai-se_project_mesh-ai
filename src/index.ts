@@ -1,10 +1,13 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import router from './routes/index.js';
 import { logger } from './middleware/logger.js';
 import { errorHandler, notFoundHandler } from './middleware/error.js';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // middleware
 app.use(express.json());
