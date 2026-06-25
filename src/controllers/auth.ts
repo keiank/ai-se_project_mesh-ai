@@ -120,4 +120,4 @@ function getCurrentUser(req: Request, res: Response): void {
 }
 
 
-export { getCurrentUser, authenticateUser, createNewUser, register, login };
+export { getCurrentUser, register, login };

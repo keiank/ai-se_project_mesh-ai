@@ -3,11 +3,11 @@ import Chat from '../models/chat.js';
 import Message from '../models/message.js';
 
 /**
- * Retrieve a list of chats.
+ * Retrieve a list of chats of the logged in user.
  *
  * @param {Request} req - Express request object.
  * @param {Response} res - Express response object.
- * @returns {void}
+ * @returns {Promise<void>}
  */
 async function getChats(req: Request, res: Response) {
   const chats = await Chat.find({ userId: req.user!.userId });
@@ -20,11 +20,11 @@ async function getChats(req: Request, res: Response) {
 }
 
 /**
- * Create a new chat.
+ * Create a new chat for the logged in user.
  *
  * @param {Request} req - Express request object with chat payload.
  * @param {Response} res - Express response object.
- * @returns {void}
+ * @returns {Promise<void>}
  */
 async function createChat(req: Request, res: Response): void {
   const { title } = req.body;
@@ -56,11 +56,11 @@ async function createChat(req: Request, res: Response): void {
 }
 
 /**
- * Retrieve a single chat by its id.
+ * Retrieve a single chat by its id for the logged in user.
  *
  * @param {Request} req - Express request object; `req.params.id` contains the chat id.
  * @param {Response} res - Express response object.
- * @returns {void}
+ * @returns {Promise<void>}
  */
 async function getChat(req: Request, res: Response) {
   const chat = await Chat.findOne({ _id: req.params.id, userId: req.user!.userId });
@@ -84,7 +84,7 @@ async function getChat(req: Request, res: Response) {
 }
 
 /**
- * Delete a chat by its id.
+ * Delete a chat by its id for a logged in user.
  *
  * @param {Request} req - Express request object; `req.params.id` contains the chat id.
  * @param {Response} res - Express response object.
@@ -99,7 +99,7 @@ function deleteChat(req: Request, res: Response): void {
 }
 
 /**
- * Send a message in a chat and return the reply.
+ * Send a message in a chat and return the reply for the logged in user.
  *
  * @param {Request} req - Express request object with message payload.
  * @param {Response} res - Express response object.
