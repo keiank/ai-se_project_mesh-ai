@@ -1,16 +1,34 @@
 import type { Request, Response } from 'express';
+import Document from '../models/document.js';
 
 /**
  * Handle document upload.
  *
  * @param {Request} req - Express request object with upload payload.
  * @param {Response} res - Express response object.
- * @returns {void}
+ * @returns {Promise<void>}
  */
-function uploadDocument(req: Request, res: Response): void {
+async function uploadDocument(req: Request, res: Response) {
+  if (!req.file) {
+    res.status(400).json({
+      success: false,
+      data: null,
+      error: { message: 'Must include a document to upload' },
+    });
+    return;
+  }
+
+  const title = req.body.title || req.file.originalname;
+
+  const document = await Document.create({
+      title,
+      fileName: req.file.originalname,
+      userId: req.user!.userId
+    });
+  
   res.status(201).json({
     success: true,
-    data: {},
+    data: document,
     error: null,
   });
 }
@@ -20,12 +38,14 @@ function uploadDocument(req: Request, res: Response): void {
  *
  * @param {Request} req - Express request object.
  * @param {Response} res - Express response object.
- * @returns {void}
+ * @returns {Promise<void>}
  */
-function getDocuments(req: Request, res: Response): void {
+async function getDocuments(req: Request, res: Response) {
+  const documents = await Document.find({ userId: req.user!.userId });
+  
   res.status(200).json({
     success: true,
-    data: {},
+    data: documents,
     error: null,
   });
 }

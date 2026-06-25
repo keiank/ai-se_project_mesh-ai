@@ -20,3 +20,6 @@ dist
 
 # Project design docs
 *.pdf
+
+# User uploaded application data
+uploads/
