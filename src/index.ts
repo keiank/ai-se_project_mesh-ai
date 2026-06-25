@@ -14,14 +14,14 @@ app.use(express.json());
 app.use(logger);
 
 // routes
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.status(200).json({
     success: true,
     data: { status: 'ok' },
     error: null,
   });
 });
-app.get('/test-error', (req, res) => {
+app.get('/test-error', (_req, _res) => {
   throw new Error('Test error');
 });
 app.use(router);

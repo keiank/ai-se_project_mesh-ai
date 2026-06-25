@@ -15,6 +15,9 @@ export default [
         es2021: true,
       },
     },
-    rules: {},
+    rules: {
+      "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+      "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    },
   },
 ];
