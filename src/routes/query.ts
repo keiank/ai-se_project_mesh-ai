@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { askQuestionGetAnswer } from '../controllers/query.js';
+import { queryDocuments } from '../controllers/query.js';
 import auth from '../middleware/auth.js';
 
 const queryRouter = Router();
 queryRouter.use(auth);
-queryRouter.post('/', askQuestionGetAnswer);
+queryRouter.post('/', queryDocuments);
 
 export { queryRouter };
