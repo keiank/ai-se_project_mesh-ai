@@ -1,0 +1,23 @@
+import { Schema } from 'mongoose';
+
+const documentSchema = new Schema({
+    title: {
+        type: String,
+        required: true,
+    },
+    fileName: {
+        type: String,
+        required: true,
+    },
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
+});
+
+export default documentSchema;
