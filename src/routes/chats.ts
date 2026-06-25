@@ -6,8 +6,11 @@ import {
   getChats,
   sendMessageGetReply,
 } from '../controllers/chats.js';
+import auth from '../middleware/auth.js';
 
 const chatsRouter = Router();
+
+chatsRouter.use(auth);
 chatsRouter.get('/', getChats);
 chatsRouter.post('/', createNewChat);
 chatsRouter.get('/:id', getChatById);
