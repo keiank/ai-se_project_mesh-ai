@@ -88,35 +88,24 @@ async function getChat(req: Request, res: Response) {
  *
  * @param {Request} req - Express request object; `req.params.id` contains the chat id.
  * @param {Response} res - Express response object.
- * @returns {void}
+ * @returns {Promise<void>}
  */
-function deleteChat(req: Request, res: Response): void {
+async function deleteChat(req: Request, res: Response): void {
+  const chatId = req.params.id;
+
+  const chat = await Chat.findByIdAndDelete(chatId);
+  
   res.status(204).json({
     success: true,
-    data: {},
+    data: chat,
     error: null,
   });
 }
 
-/**
- * Send a message in a chat and return the reply for the logged in user.
- *
- * @param {Request} req - Express request object with message payload.
- * @param {Response} res - Express response object.
- * @returns {void}
- */
-function sendMessageGetReply(req: Request, res: Response): void {
-  res.status(201).json({
-    success: true,
-    data: {},
-    error: null,
-  });
-}
 
 export {
   getChats,
   createChat,
   getChat,
   deleteChat,
-  sendMessageGetReply,
 };
