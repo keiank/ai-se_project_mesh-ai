@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 const chatSchema = new Schema({
     title: {
@@ -16,4 +16,4 @@ const chatSchema = new Schema({
     },
 });
 
-export default chatSchema;
+export default model('Chat', chatSchema);

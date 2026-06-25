@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 const chunkSchema = new Schema({
     documentId: {
@@ -20,4 +20,4 @@ const chunkSchema = new Schema({
     },
 });
 
-export default chunkSchema;
+export default model('Chunk', chunkSchema);

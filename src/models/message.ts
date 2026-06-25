@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 const messageSchema = new Schema({
     chatId: {
@@ -20,4 +20,4 @@ const messageSchema = new Schema({
     },
 });
 
-export default messageSchema;
+export default model('Message', messageSchema);

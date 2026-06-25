@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 const documentSchema = new Schema({
     title: {
@@ -20,4 +20,4 @@ const documentSchema = new Schema({
     },
 });
 
-export default documentSchema;
+export default model('Document', documentSchema);
