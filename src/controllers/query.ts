@@ -11,7 +11,7 @@ import { buildContext, getClient, LLM_MODEL } from '../utils/openai-client.js';
  *
  * @param {Request} req - Express request object containing the query.
  * @param {Response} res - Express response object.
- * @returns {void}
+ * @returns {Promise<void>}
  */
 async function queryDocuments(req: Request, res: Response): void {
   const { question } = req.body;
