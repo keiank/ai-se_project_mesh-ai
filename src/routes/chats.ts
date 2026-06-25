@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import {
-  createNewChat,
+  createChat,
   deleteChat,
-  getChatById,
+  getChat,
   getChats,
   sendMessageGetReply,
 } from '../controllers/chats.js';
@@ -12,8 +12,8 @@ const chatsRouter = Router();
 
 chatsRouter.use(auth);
 chatsRouter.get('/', getChats);
-chatsRouter.post('/', createNewChat);
-chatsRouter.get('/:id', getChatById);
+chatsRouter.post('/', createChat);
+chatsRouter.get('/:id', getChat);
 chatsRouter.delete('/:id', deleteChat);
 chatsRouter.post('/:id/messages', sendMessageGetReply);
 
