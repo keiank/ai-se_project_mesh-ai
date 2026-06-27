@@ -9,7 +9,6 @@ import { createMessage } from '../controllers/messages.js';
 import auth from '../middleware/auth.js';
 
 const chatsRouter = Router();
-
 chatsRouter.use(auth);
 chatsRouter.get('/', getChats);
 chatsRouter.post('/', createChat);
