@@ -6,7 +6,6 @@ import Message from '../models/message.js';
 import { createEmbedding } from '../utils/embeddings.js';
 import { rankBySimilarity } from '../utils/vector-search.js';
 import { buildContext, getClient, LLM_MODEL } from '../utils/openai-client.js';
-import message from '../models/message.js';
 
 export const createMessage = async (req: Request, res: Response): Promise<void> => {
   const { question } = req.body;

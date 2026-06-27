@@ -13,7 +13,7 @@ import { buildContext, getClient, LLM_MODEL } from '../utils/openai-client.js';
  * @param {Response} res - Express response object.
  * @returns {Promise<void>}
  */
-async function queryDocuments(req: Request, res: Response): void {
+async function queryDocuments(req: Request, res: Response) {
   const { question } = req.body;
   if (!question) {
     res.status(400).json({

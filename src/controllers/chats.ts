@@ -26,7 +26,7 @@ async function getChats(req: Request, res: Response) {
  * @param {Response} res - Express response object.
  * @returns {Promise<void>}
  */
-async function createChat(req: Request, res: Response): void {
+async function createChat(req: Request, res: Response) {
   const { title } = req.body;
   
   if (!title) {
@@ -90,7 +90,7 @@ async function getChat(req: Request, res: Response) {
  * @param {Response} res - Express response object.
  * @returns {Promise<void>}
  */
-async function deleteChat(req: Request, res: Response): void {
+async function deleteChat(req: Request, res: Response) {
   const chatId = req.params.id;
 
   const chat = await Chat.findByIdAndDelete(chatId);
