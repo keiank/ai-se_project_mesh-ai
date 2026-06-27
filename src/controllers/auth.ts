@@ -104,16 +104,36 @@ async function login(req: Request, res: Response) {
  *
  * @param {Request} req - Express request object.
  * @param {Response} res - Express response object.
- * @returns {void}
+ * @returns {Promise<void>}
  */
-function getCurrentUser(req: Request, res: Response): void {
+async function getCurrentUser(req: Request, res: Response) {
+  const userId = req.user?.userId;
+
+  if (!userId) {
+    res.status(400).json({
+      success: false,
+      data: null,
+      error: { message: 'No logged in user' },
+    });
+    return;
+  }
+
+  const user = await User.findOne({ _id: userId });
+  if (!user) {
+    res.status(400).json({
+      success: false,
+      data: null,
+      error: { message: 'No logged in user' },
+    });
+    return;
+  }
+
   res.status(200).json({
     success: true,
     data: {
-      userId: 'user_001',
-      email: 'user@example.com',
-      name: 'John Doe',
-      createdAt: '2026-01-01T00:00:00Z',
+      userId: user._id,
+      email: user.email,
+      name: user.name,
     },
     error: null,
   });
