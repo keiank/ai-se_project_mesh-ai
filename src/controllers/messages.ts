@@ -7,6 +7,14 @@ import { createEmbedding } from '../utils/embeddings.js';
 import { rankBySimilarity } from '../utils/vector-search.js';
 import { buildContext, getClient, LLM_MODEL } from '../utils/openai-client.js';
 
+/**
+ * Perform RAG pipeline, creating a message, associating
+ * it's question and response with an existing chat.
+ *
+ * @param {Request} req - Express request object with upload payload.
+ * @param {Response} res - Express response object.
+ * @returns {Promise<void>}
+ */
 export const createMessage = async (req: Request, res: Response): Promise<void> => {
   const { question } = req.body;
   const chatId = req.params.id;

@@ -9,7 +9,7 @@ import Message from '../models/message.js';
  * @param {Response} res - Express response object.
  * @returns {Promise<void>}
  */
-async function getChats(req: Request, res: Response) {
+async function getChats(req: Request, res: Response): Promise<void> {
   const chats = await Chat.find({ userId: req.user!.userId });
   
   res.status(200).json({
@@ -26,7 +26,7 @@ async function getChats(req: Request, res: Response) {
  * @param {Response} res - Express response object.
  * @returns {Promise<void>}
  */
-async function createChat(req: Request, res: Response) {
+async function createChat(req: Request, res: Response): Promise<void> {
   const { title } = req.body;
   
   if (!title) {
@@ -62,7 +62,7 @@ async function createChat(req: Request, res: Response) {
  * @param {Response} res - Express response object.
  * @returns {Promise<void>}
  */
-async function getChat(req: Request, res: Response) {
+async function getChat(req: Request, res: Response): Promise<void> {
   const chat = await Chat.findOne({ _id: req.params.id, userId: req.user!.userId });
   if (!chat) {
     res.status(404).json({
@@ -90,7 +90,7 @@ async function getChat(req: Request, res: Response) {
  * @param {Response} res - Express response object.
  * @returns {Promise<void>}
  */
-async function deleteChat(req: Request, res: Response) {
+async function deleteChat(req: Request, res: Response): Promise<void> {
   const chatId = req.params.id;
 
   const chat = await Chat.findByIdAndDelete(chatId);

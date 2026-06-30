@@ -13,7 +13,7 @@ import { createEmbedding } from '../utils/embeddings.js';
  * @param {Response} res - Express response object.
  * @returns {Promise<void>}
  */
-async function uploadDocument(req: Request, res: Response) {
+async function uploadDocument(req: Request, res: Response): Promise<void> {
   if (!req.file) {
     res.status(400).json({
       success: false,
@@ -59,7 +59,7 @@ async function uploadDocument(req: Request, res: Response) {
  * @param {Response} res - Express response object.
  * @returns {Promise<void>}
  */
-async function getDocuments(req: Request, res: Response) {
+async function getDocuments(req: Request, res: Response): Promise<void> {
   const documents = await Document.find({ userId: req.user!.userId });
   
   res.status(200).json({
@@ -76,7 +76,7 @@ async function getDocuments(req: Request, res: Response) {
  * @param {Response} res - Express response object.
  * @returns {Promise<void>}
  */
-async function getDocumentById(req: Request, res: Response) {
+async function getDocumentById(req: Request, res: Response): Promise<void> {
   const documentId = req.params.id;
 
   const document = await Document.findById(documentId);
@@ -103,7 +103,7 @@ async function getDocumentById(req: Request, res: Response) {
  * @param {Response} res - Express response object.
  * @returns {Promise<void>}
  */
-async function deleteDocumentById(req: Request, res: Response) {
+async function deleteDocumentById(req: Request, res: Response): Promise<void> {
   const documentId = req.params.id;
 
   const document = await Document.findByIdAndDelete(documentId);

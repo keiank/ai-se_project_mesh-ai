@@ -4,7 +4,14 @@ import User from '../models/user.js';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 
-async function register(req: Request, res: Response) {
+/**
+ * Create an account with user provided credentials.
+ *
+ * @param {Request} req - Express request object.
+ * @param {Response} res - Express response object.
+ * @returns {Promise<void>}
+ */
+async function register(req: Request, res: Response): Promise<void> {
   const { email, password, name } = req.body;
 
   if (!email || !password || !name) {
@@ -51,7 +58,14 @@ async function register(req: Request, res: Response) {
   }
 }
 
-async function login(req: Request, res: Response) {
+/**
+ * Login to the service with user provided credentials.
+ *
+ * @param {Request} req - Express request object.
+ * @param {Response} res - Express response object.
+ * @returns {Promise<void>}
+ */
+async function login(req: Request, res: Response): Promise<void> {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -106,7 +120,7 @@ async function login(req: Request, res: Response) {
  * @param {Response} res - Express response object.
  * @returns {Promise<void>}
  */
-async function getCurrentUser(req: Request, res: Response) {
+async function getCurrentUser(req: Request, res: Response): Promise<void> {
   const userId = req.user?.userId;
 
   if (!userId) {

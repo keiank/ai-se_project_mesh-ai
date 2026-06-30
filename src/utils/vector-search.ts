@@ -12,6 +12,13 @@ type ScoredChunk = {
     score: number;
 };
 
+/**
+ * Find the dot product of 2 embedding matrices
+ *
+ * @param {number[]} a - The first matrix.
+ * @param {number[]} b - The second matrix.
+ * @returns {number} - Dot product of 2 input matrices.
+ */
 const dot = (a: number[], b: number[]): number => {
     let sum = 0;
     const len = Math.min(a.length, b.length);
@@ -21,6 +28,12 @@ const dot = (a: number[], b: number[]): number => {
     return sum;
 }
 
+/**
+ * The magnitude of an input matrix.
+ *
+ * @param {number[]} vec - Input matrix.
+ * @returns {number} - The input matrix's absolute length
+ */
 const magnitude = (vec: number[]): number => {
     let sum = 0;
     for (const v of vec) {
@@ -29,6 +42,13 @@ const magnitude = (vec: number[]): number => {
     return Math.sqrt(sum) || 1;
 };
 
+/**
+ * Find the "limit" number of similar embedding chunks.
+ *
+ * @param {number[]} queryEmbedding - Embedding representing the input question
+ * @param {ChunkCandidate[]} items - The chunks to be compared with question for similarity.
+ * @returns {ScoredChunk[]} - "limit" number of chunks in descending order of relevance to input question.
+ */
 export const rankBySimilarity = (
     queryEmbedding: number[],
     items: ChunkCandidate[],
