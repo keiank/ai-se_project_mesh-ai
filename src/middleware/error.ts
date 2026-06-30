@@ -42,7 +42,7 @@ function errorHandler(
   res.status(statusCode).json({
     success: false,
     data: null,
-    error: message,
+    error: { message },
   });
 
   next();
