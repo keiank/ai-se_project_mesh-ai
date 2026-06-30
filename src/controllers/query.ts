@@ -26,7 +26,8 @@ async function queryDocuments(req: Request, res: Response) {
 
   // Find relevant chunks to the question
   const userId = req.user!.userId;
-  const docIds = await Document.find({ userId }, {'_id': 1});
+  const userDocs = await Document.find({ userId }, '_id');
+  const docIds = userDocs.map((d) => d._id);
 
   const chunkRecords = await Chunk.find({ documentId: { $in: docIds }});
   const chunks = chunkRecords.map((c) => ({
