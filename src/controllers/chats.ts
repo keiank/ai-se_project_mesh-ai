@@ -10,7 +10,17 @@ import Message from '../models/message.js';
  * @returns {Promise<void>}
  */
 async function getChats(req: Request, res: Response): Promise<void> {
-  const chats = await Chat.find({ userId: req.user!.userId });
+  const userId = req.user!.userId;
+  if (!userId) {
+    res.status(400).json({
+      success: false,
+      data: null,
+      error: { message: 'No logged in user' },
+    })
+    return;
+  }
+  
+  const chats = await Chat.find({ userId });
   
   res.status(200).json({
     success: true,
