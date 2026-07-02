@@ -1,12 +1,13 @@
 import "./KnowledgeBase.css";
 import { useState, useEffect } from "react";
 import UploadArea from "../../components/UploadArea/UploadArea";
-import type { KnowledgeDoc } from "../../utils/api";
+import { getDocuments, type KnowledgeDoc } from "../../utils/api";
+import Delete from "../../assets/Delete.svg";
 
 export default function KnowledgeBase() {
     const [documents, setDocuments] = useState<KnowledgeDoc[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
 
     const handleFileSelect = (file: File) => {
         const newDoc: KnowledgeDoc = {
@@ -19,13 +20,52 @@ export default function KnowledgeBase() {
         setDocuments([newDoc, ...documents]);
     };
 
+    useEffect(() => {
+        const load = async () => {
+            try {
+                const res = await getDocuments();
+                setDocuments(res?.data || []);
+            }
+            catch {
+                setError("Failed to load documents");
+            }
+            finally {
+                setIsLoading(false);
+            }
+        };
+
+        load();
+    }, []);
+
     return (
         <div className="knowledge-base">
             <h1>Manage Your Knowledge Base</h1>
             <section className="knowledge-base__content">
-                <p>Upload documents (PDF)</p>
+                <p className="knowledge-base__upload-label">Upload documents (PDF)</p>
                 <UploadArea onFileSelect={handleFileSelect}/>
-                <ul className="knowledge-base__document-list"></ul>
+                <ul
+                className="knowledge-base__document-list">
+                    {isLoading && (
+                        <p className="knowledge-base__document-list_message">Loading...</p>
+                    )}
+                    {!isLoading && error && (
+                        <p className="knowledge-base__document-list_error knowledge-base__document-list_message">Failed to load documents.</p>
+                    )}
+                    {!isLoading && !error && documents.length === 0 && (
+                        <p className="knowledge-base__document-list_message">No documents yet.</p>
+                    )}
+                    {!isLoading && !error && documents.length > 0 && (
+                        documents.map((d) => {
+                            return (<span className="knowledge-base__document" key={d._id}>
+                                {d.fileName}
+                                <button
+                                className="knowledge-base__document_delete-btn"
+                                aria-label="Delete document button">
+                                    <img src={Delete}></img>
+                                </button>
+                                </span>);
+                        })
+                    )}</ul>
                 <button className="knowledge-base__btn-save">Save</button>
             </section>
         </div>);
