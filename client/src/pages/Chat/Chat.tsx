@@ -27,10 +27,28 @@ export default function Chat() {
         load();
     }, []);
 
+    const handleCreateChat = async () => {
+        const title = newChatTitle.trim() || 'New Chat';
+        setIsCreatingChat(false);
+        setNewChatTitle("")
+        try {
+            const res = await createChat(title);
+            if (res.data) {
+                setChats([res.data!, ...chats]);
+                setActiveChatId(res.data!._id);
+            }
+        } catch {
+            <p className="chat__error-msg">Unable to create new chat</p>
+        }
+    };
+
     return (
         <div className="chat">
             <aside className="chat__sidebar">
-                <button className="chat__new-btn" type="button">
+                <button
+                className="chat__new-btn"
+                type="button"
+                onClick={() => setIsCreatingChat(true)}>
                     + New Chat
                 </button>
 
@@ -38,6 +56,25 @@ export default function Chat() {
                 {chatsError && <p className="chat__sidebar-message">{chatsError}</p>}
 
                 <ul className="chat__list">
+                    <li>
+                        {isCreatingChat && (
+                        <input
+                        className="chat__title-input"
+                        type="text"
+                        placeholder="Chat name"
+                        value={newChatTitle}
+                        onChange={(e) => {setNewChatTitle(e.target.value)}}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleCreateChat();
+                            if (e.key === 'Escape') {
+                                setNewChatTitle("");
+                                setIsCreatingChat(false);
+                            }
+                        }}
+                        autoFocus
+                        />
+                        )}
+                    </li>
                     {chats.map((c) => (
                         <li
                         key={c._id}

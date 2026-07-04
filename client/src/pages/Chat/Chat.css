@@ -49,6 +49,10 @@
     color: #9679D9;
 }
 
+.chat__new-btn_error-msg {
+    color: red;
+}
+
 .chat__main {
 
 }
