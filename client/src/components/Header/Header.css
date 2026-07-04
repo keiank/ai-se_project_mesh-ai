@@ -26,6 +26,10 @@
     color: black;
 }
 
+.header__nav-link:hover {
+    background-color: #9679D91A;
+}
+
 .header__nav-link_active {
     background-color: #9679D933;
 }
