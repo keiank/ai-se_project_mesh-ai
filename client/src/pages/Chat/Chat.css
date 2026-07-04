@@ -1,0 +1,54 @@
+.chat {
+
+}
+
+.chat__sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 220px;
+}
+
+.chat__new-btn {
+    border: 1px solid #9679D933;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 120%;
+    letter-spacing: 0%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.chat__sidebar-message {
+
+}
+
+.chat__list {
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    list-style: none;
+    padding: 0;
+}
+
+.chat__item {
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.chat__item:hover {
+    color: #A179D9;
+    background-color: white;
+}
+
+.chat__item_active,
+.chat__item:active,
+.chat__item_active:hover {
+    background-color: #9679D933;
+    color: #9679D9;
+}
+
+.chat__main {
+
+}
