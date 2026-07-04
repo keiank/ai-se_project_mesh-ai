@@ -1,0 +1,31 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    height: 36px;
+    margin: 10px 20px;
+}
+
+.header__nav {
+    display: flex;
+    gap: 16px;
+}
+
+.header__nav-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    padding: 8.5px 12px;
+    line-height: 120%;
+    border-radius: 4px;
+}
+
+.header__nav-link:hover,
+.header__nav-link:visited {
+    text-decoration: none;
+    color: black;
+}
+
+.header__nav-link_active {
+    background-color: #9679D933;
+}

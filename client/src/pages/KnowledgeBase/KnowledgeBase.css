@@ -1,12 +1,6 @@
-.knowledge-base__btn-save {
-    background-color: #1C1C1C;
-    color: white;
-    border-radius: 8px;
-    padding: 10px 16px;
-}
-
 .knowledge-base {
     width: 670px;
+    margin-top: 34px;
 }
 
 .knowledge-base__content {
@@ -34,12 +28,23 @@
     margin-left: 10px;
 }
 
+.knowledge-base__document_delete-btn:hover {
+    opacity: 30%;
+}
+
 .knowledge-base__document-list_message {
     margin: 20px 0 0 0;
 }
 
 .knowledge-base__document-list_error {
     color: red;
+}
+
+.knowledge-base__btn-save {
+    background-color: #1C1C1C;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 16px;
 }
 
 @media screen and (max-width: 670px) {

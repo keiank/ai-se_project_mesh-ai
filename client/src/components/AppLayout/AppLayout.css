@@ -1,0 +1,5 @@
+.app-layout__main {
+    font-family: "Work Sans", Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+}
