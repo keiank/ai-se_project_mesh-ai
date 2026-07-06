@@ -1,22 +1,28 @@
 import "./Chat.css";
 import { useEffect, useState } from "react";
-import { getChats, createChat } from "../../utils/api";
+import type { Message } from "../../utils/api";
+import { getChats, createChat, getChat } from "../../utils/api";
 import type { Chat as ChatType } from "../../utils/api";
+import SendButton from "../../assets/SendMsg.png";
 
 export default function Chat() {
+    // For chat sidebar
     const [chats, setChats] = useState<ChatType[]>([]);
     const [activeChatId, setActiveChatId] = useState<string | null>(null);
     const [chatsError, setChatsError] = useState<string | null>(null);
     const [isLoadingChats, setIsLoadingChats] = useState<boolean>(true);
     const [isCreatingChat, setIsCreatingChat] = useState<boolean>(false);
     const [newChatTitle, setNewChatTitle] = useState<string>('');
+    // For chat main area
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [isLoadingMessages, setIsLoadingMessages] = useState<boolean>(false);
+    const [messagesError, setMessagesError] = useState<string>("");
 
     useEffect(() => {
         const load = async () => {
             try {
                 const res = await getChats();
                 setChats(res.data || []);
-                console.log(res.data);
             } catch {
                 setChatsError("Unable to load chats");
             } finally {;
@@ -26,6 +32,26 @@ export default function Chat() {
 
         load();
     }, []);
+
+    useEffect(() => {
+        if (!activeChatId) return;
+        const load = async () => {
+            setMessages([]);
+            setMessagesError("");
+            setIsLoadingMessages(true);
+            try {
+                const res = await getChat(activeChatId);
+                setMessages(res.data?.messages || []);
+                console.log(res.data?.messages);
+            } catch {
+                setMessagesError("Unable to load chat messages");
+            } finally {
+                setIsLoadingMessages(false);
+            }
+        };
+
+        load();
+    }, [activeChatId]);
 
     const handleCreateChat = async () => {
         const title = newChatTitle.trim() || 'New Chat';
@@ -91,7 +117,50 @@ export default function Chat() {
                     }
                 </ul>
             </aside>
-            <div className="chat__main">{/* message area — coming next lesson */}</div>
+            <div className="chat__main">
+                {!messagesError && !isLoadingMessages && !activeChatId && (
+                    <div className="chat__no-messages">
+                        <p className="no-messages__text">Create a new chat or select an existing chat to start the conversation</p>
+                        <button className="chat__no-messages-btn" type="button">Start New Chat</button>
+                    </div>
+                )}
+                
+                {!messagesError && !isLoadingMessages && activeChatId && messages.length === 0 && (
+                    <div className="chat__no-messages">
+                        <p className="no-messages__text">Ask a question below to start the conversation</p>
+                        <div className="chat__no-messages-input">
+                            <textarea
+                            className="chat__input"
+                            placeholder="Ask any question">
+                            </textarea>
+                            <button className="chat__send-msg-btn" type="button">
+                                <img
+                                src={SendButton}
+                                alt="Send message button">
+                                </img>
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {activeChatId && isLoadingMessages && (
+                    <p className="chat__no-messages">{/* loading message */}</p>
+                )}
+
+                {activeChatId && messagesError && (
+                    <div className="chat__error">
+                    {/* "Chat error" Figma frame */}
+                    </div>
+                )}
+
+                {activeChatId && !isLoadingMessages && !messagesError && (
+                    <ul className="chat__messages">
+                    {/* "Chat with loaded messages" Figma frame. */}
+                    {/* At this stage, you don't need to build the input area yet. */}
+                    {/* See styling hints below. */}
+                    </ul>
+                )}
+                </div>
         </div>
     );
 }
