@@ -5,6 +5,7 @@ import { getChats, createChat, getChat } from "../../utils/api";
 import type { Chat as ChatType } from "../../utils/api";
 import SendButton from "../../assets/SendMsg.png";
 import ErrorIcon from "../../assets/ErrorIcon.png";
+import ReactMarkdown from "react-markdown";
 
 export default function Chat() {
     // For chat sidebar
@@ -129,18 +130,6 @@ export default function Chat() {
                 {!messagesError && !isLoadingMessages && activeChatId && messages.length === 0 && (
                     <div className="chat__no-messages">
                         <p className="no-messages__text">Ask a question below to start the conversation</p>
-                        <div className="chat__no-messages-input">
-                            <textarea
-                            className="chat__input"
-                            placeholder="Ask any question">
-                            </textarea>
-                            <button className="chat__send-msg-btn chat__main-btn" type="button">
-                                <img
-                                src={SendButton}
-                                alt="Send message button">
-                                </img>
-                            </button>
-                        </div>
                     </div>
                 )}
 
@@ -162,13 +151,40 @@ export default function Chat() {
                 )}
 
                 {activeChatId && !isLoadingMessages && !messagesError && (
-                    <ul className="chat__messages">
-                    {/* "Chat with loaded messages" Figma frame. */}
-                    {/* At this stage, you don't need to build the input area yet. */}
-                    {/* See styling hints below. */}
-                    </ul>
+                    <>
+                        <ul className="chat__messages">
+                            {messages.map((m) => (
+                                <li
+                                className={
+                                m.role === 'user'
+                                ? "chat__message chat__message_user"
+                                : "chat__message chat__message_assistant"
+                                }
+                                >
+                                    {m.role === 'assistant'
+                                    ? <ReactMarkdown>{m.content}</ReactMarkdown>
+                                    : m.content
+                                    }
+                                </li>
+                            ))}
+                        </ul>
+                        <div className="chat__input-bar">
+                            <textarea
+                            className="chat__input"
+                            placeholder="Ask any question"
+                            rows={1}
+                            >
+                            </textarea>
+                            <button className="chat__send" type="button">
+                                <img
+                                src={SendButton}
+                                alt="Send message button">
+                                </img>
+                            </button>
+                        </div>
+                    </>
                 )}
-                </div>
+            </div>
         </div>
     );
 }
