@@ -4,6 +4,7 @@ import type { Message } from "../../utils/api";
 import { getChats, createChat, getChat } from "../../utils/api";
 import type { Chat as ChatType } from "../../utils/api";
 import SendButton from "../../assets/SendMsg.png";
+import ErrorIcon from "../../assets/ErrorIcon.png";
 
 export default function Chat() {
     // For chat sidebar
@@ -121,7 +122,7 @@ export default function Chat() {
                 {!messagesError && !isLoadingMessages && !activeChatId && (
                     <div className="chat__no-messages">
                         <p className="no-messages__text">Create a new chat or select an existing chat to start the conversation</p>
-                        <button className="chat__no-messages-btn" type="button">Start New Chat</button>
+                        <button className="chat__no-messages-btn chat__main-btn" type="button">Start New Chat</button>
                     </div>
                 )}
                 
@@ -133,7 +134,7 @@ export default function Chat() {
                             className="chat__input"
                             placeholder="Ask any question">
                             </textarea>
-                            <button className="chat__send-msg-btn" type="button">
+                            <button className="chat__send-msg-btn chat__main-btn" type="button">
                                 <img
                                 src={SendButton}
                                 alt="Send message button">
@@ -144,12 +145,19 @@ export default function Chat() {
                 )}
 
                 {activeChatId && isLoadingMessages && (
-                    <p className="chat__no-messages">{/* loading message */}</p>
+                    <p className="chat__no-messages chat__no-messages_loading">
+                        Loading...
+                    </p>
                 )}
 
                 {activeChatId && messagesError && (
                     <div className="chat__error">
-                    {/* "Chat error" Figma frame */}
+                        <img src={ErrorIcon} className="error__image"></img>
+                        <div className="error__container">
+                            <p className="container__message">Looks like something went wrong</p>
+                            <p className="container__message-detail">Try reloading the page or creating the chat again</p>
+                        </div>
+                        <button className="error__button chat__main-btn" type="button">Go to the main page</button>
                     </div>
                 )}
 
