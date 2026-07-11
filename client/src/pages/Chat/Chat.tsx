@@ -54,7 +54,6 @@ export default function Chat() {
             try {
                 const res = await getChat(activeChatId);
                 setMessages(res.data?.messages || []);
-                console.log(res.data?.messages);
             } catch {
                 setMessagesError("Unable to load chat messages");
             } finally {
@@ -220,6 +219,7 @@ export default function Chat() {
                         <ul className="chat__messages">
                             {messages.map((m) => (
                                 <li
+                                key={m._id}
                                 className={
                                 m.role === 'user'
                                 ? "chat__message chat__message_user"
