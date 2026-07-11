@@ -6,6 +6,12 @@ import type { Chat as ChatType } from "../../utils/api";
 import SendButton from "../../assets/SendMsg.png";
 import ErrorIcon from "../../assets/ErrorIcon.png";
 import ReactMarkdown from "react-markdown";
+import { useOutletContext } from "react-router-dom";
+
+type MobileContext = {
+    isMobileMenuOpen: boolean;
+    setIsMobileMenuOpen: (open: boolean) => void;
+}
 
 export default function Chat() {
     // For chat sidebar
@@ -21,6 +27,8 @@ export default function Chat() {
     const [messagesError, setMessagesError] = useState<string>("");
     const [input, setInput] = useState<string>("");
     const [isSending, setIsSending] = useState<boolean>(false);
+
+    const { isMobileMenuOpen, setIsMobileMenuOpen } = useOutletContext<MobileContext>();
 
     useEffect(() => {
         const load = async () => {
@@ -66,6 +74,7 @@ export default function Chat() {
             if (res.data) {
                 setChats([res.data!, ...chats]);
                 setActiveChatId(res.data!._id);
+                setIsMobileMenuOpen(false);
             }
         } catch {
             <p className="chat__error-msg">Unable to create new chat</p>
@@ -116,7 +125,9 @@ export default function Chat() {
 
     return (
         <div className="chat">
-            <aside className="chat__sidebar">
+            <aside
+            className={`chat__sidebar${isMobileMenuOpen ? ' chat__sidebar_open' : ''}`}
+            >
                 <button
                 className="chat__new-btn"
                 type="button"
@@ -155,8 +166,10 @@ export default function Chat() {
                             ? 'chat__item chat__item_active'
                             : 'chat__item'
                         }
-                        onClick={() => setActiveChatId(c._id)}
-                        >
+                        onClick={() => {
+                            setActiveChatId(c._id);
+                            setIsMobileMenuOpen(false);
+                        }}>
                             {c.title}
                         </li>
                     ))
@@ -167,7 +180,15 @@ export default function Chat() {
                 {!messagesError && !isLoadingMessages && !activeChatId && (
                     <div className="chat__no-messages">
                         <p className="no-messages__text">Create a new chat or select an existing chat to start the conversation</p>
-                        <button className="chat__no-messages-btn chat__main-btn" type="button">Start New Chat</button>
+                        <button
+                        className="chat__no-messages-btn chat__main-btn"
+                        type="button"
+                        onClick={() => {
+                            setIsCreatingChat(true);
+                            setIsMobileMenuOpen(true);
+                        }}
+                        >Start New Chat
+                        </button>
                     </div>
                 )}
                 

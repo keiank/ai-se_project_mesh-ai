@@ -61,4 +61,8 @@
     .knowledge-base__document-list {
         margin-top: 32px;
     }
+
+    .knowledge-base {
+        width: 100%;
+    }
 }
