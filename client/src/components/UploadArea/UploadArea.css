@@ -43,8 +43,21 @@
   display: none;
 }
 
+.mobile-label {
+  display: none;
+}
+
 @media (max-width: 394px) {
   .upload-area__label span {
     display: none;
+  }
+
+  .upload-area { 
+    gap: 0;
+  }
+
+  .mobile-label {
+    display: block;
+    text-decoration: underline;
   }
 }

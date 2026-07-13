@@ -49,6 +49,7 @@ export default function UploadArea({ onFileSelect }: Props) {
           onChange={handleChange}
         />
       </label>
+      <span className="mobile-label">Upload</span>
     </div>
   );
 }
