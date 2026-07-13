@@ -21,10 +21,6 @@
     font-size: 14px;
 }
 
-.chat__sidebar-message {
-
-}
-
 .chat__list {
     line-height: 100%;
     list-style: none;
@@ -55,7 +51,7 @@
 
 .chat__main {
     margin: 0 auto 0 auto;
-    max-width: 670px;
+    width: 670px;
 }
 
 .chat__main-btn {
@@ -85,7 +81,7 @@
 .no-messages__text {
     font-weight: 600;
     font-style: SemiBold;
-    font-size: 1.5em;
+    font-size: 32px;
     line-height: 100%;
     letter-spacing: 0%;
     text-align: center;
@@ -101,21 +97,23 @@
     min-height: 100px;
     display: flex;
     justify-content: space-between;
-    margin: 32px 0 107px 0;
+    padding: 32px 0 107px 0;
 }
 
 .chat__input {
     width: 100%;
+    min-height: 100px;
     border-radius: 8px;
     border-width: 1px;
     z-index: 2;
     padding: 10px 37px 10px 16px;
+    resize: none;
 }
 
 .chat__send {
     position: absolute;
     height: fit-content; /* Make sure button aligns properly in textarea */
-    top: 10px;
+    top: 41px;
     right: 16px;
     z-index: 2;
     opacity: 50%;
@@ -173,7 +171,6 @@
 
  .chat__message_assistant {
    align-self: flex-start;
-   margin-right: 116px;
  }
 
  /* Markdown elements inside assistant messages */
@@ -192,7 +189,7 @@
 
  .chat__message_assistant ul,
  .chat__message_assistant ol {
-   padding-left: 20px;
+   padding-left: 28px;
    margin-bottom: 12px;
  }
 
@@ -238,6 +235,7 @@
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    padding: 16px 19px 0 16px;
   }
 
   .chat__sidebar_open {
@@ -248,5 +246,22 @@
   .chat__messages,
   .chat__input-bar {
     margin-left: 0;
+  }
+
+  .chat__input-bar {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    opacity: 1;
+    padding: 16px 0 25px 0;
+  }
+
+  .chat__send {
+    top: 30px;
+    right: 21px;
+  }
+
+  .chat__main {
+    margin: 0;
   }
 }
