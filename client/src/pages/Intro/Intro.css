@@ -66,3 +66,50 @@
         rgba(150, 121, 217, 0.4) 0%,
         rgba(150, 121, 217, 0) 100%);
 }
+
+@media screen and (max-width: 670px) {
+    .intro { 
+        justify-content: inherit;
+    }
+
+    .intro__header-img {
+        display: none;
+    }
+
+    .intro__header {
+        padding: 28px 0;
+        margin-bottom: 0;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .intro__header-text {
+        text-align: center;
+    }
+
+    .card-container {
+        padding-top: 11px;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .card {
+        flex-direction: row;
+        max-width: 100%;
+        padding: 21px 16px;
+        gap: 23px;
+        align-items: center;
+    }
+
+    .card__icon {
+        margin: 0;
+    }
+
+    .intro__description-text {
+        text-align: center;
+    }
+
+    .intro__start-btn {
+        width: 100%;
+    }
+}
