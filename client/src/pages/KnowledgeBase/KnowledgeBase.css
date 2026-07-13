@@ -65,4 +65,8 @@
     .knowledge-base {
         width: 100%;
     }
+
+    .knowledge-base__btn-save {
+        width: 100%;
+    }
 }
