@@ -76,7 +76,7 @@ export default function Chat() {
                 setIsMobileMenuOpen(false);
             }
         } catch {
-            <p className="chat__error-msg">Unable to create new chat</p>
+            setChatsError("Unable to create new chat")
         }
     };
 
