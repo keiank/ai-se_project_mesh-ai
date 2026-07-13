@@ -81,5 +81,10 @@
   /* Shown when the menu is open */
   .header__nav_mobile {
     display: flex;
+    padding-bottom: 77px;
+  }
+
+  .header__nav-link_active {
+    background-color: inherit;
   }
 }
