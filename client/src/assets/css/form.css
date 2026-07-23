@@ -5,6 +5,7 @@
     font-weight: 400;
     font-size: 18px;
     line-height: 1;
+    padding-bottom: 10px;
 }
 
 .form__label {
@@ -72,13 +73,13 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 24px;
 }
 
 .page-switchers {
     display: flex;
     gap: 12px;
     width: 100%;
+    padding-bottom: 24px
 }
 
 .page-switchers__btn {

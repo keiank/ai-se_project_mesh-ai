@@ -1,14 +1,27 @@
 import "./Register.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useFormWithValidation } from "../../hooks/useFormWithValidation";
+import { registerUser } from "../../utils/api";
+import { useState } from "react";
 
 export default function Register() {
     const { values, errors, isValid, handleChange } = useFormWithValidation();
+    const [apiError, setApiError] = useState<string | undefined>(undefined);
+    const navigate = useNavigate();
 
     function handleSubmit(e: React.SubmitEvent) {
         e.preventDefault();
+        setApiError(undefined);
         if (!isValid) return;
-        console.log(values);
+        registerUser(values.name, values.email, values.password)
+            .then((res) => {
+                if (res.success) {
+                    navigate('/login');
+                }
+            })
+            .catch((e) => {
+                setApiError(e);
+            });
     }
 
     function getNavLinkClass({ isActive }: { isActive: boolean }) {
@@ -108,6 +121,11 @@ export default function Register() {
                         Create Account
                     </button>
                 </form>
+                {apiError && (
+                <span className="form__error-msg">
+                    An error occured. Please try again later
+                </span>
+                )}
             </div>
         </div>
     );

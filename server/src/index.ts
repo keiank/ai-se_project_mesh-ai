@@ -5,11 +5,13 @@ import express from 'express';
 import router from './routes/index.js';
 import { logger } from './middleware/logger.js';
 import { errorHandler, notFoundHandler } from './middleware/error.js';
+import cors from "cors";
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 // middleware
+app.use(cors({ origin: /^http:\/\/localhost(:\d+)?$/ }));
 app.use(express.json());
 app.use(logger);
 
