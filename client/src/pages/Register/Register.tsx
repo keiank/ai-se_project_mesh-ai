@@ -6,12 +6,12 @@ import { useState } from "react";
 
 export default function Register() {
     const { values, errors, isValid, handleChange } = useFormWithValidation();
-    const [apiError, setApiError] = useState<string | undefined>(undefined);
+    const [apiError, setApiError] = useState<boolean>(false);
     const navigate = useNavigate();
 
     function handleSubmit(e: React.SubmitEvent) {
         e.preventDefault();
-        setApiError(undefined);
+        setApiError(false);
         if (!isValid) return;
         registerUser(values.name, values.email, values.password)
             .then((res) => {
@@ -19,8 +19,8 @@ export default function Register() {
                     navigate('/login');
                 }
             })
-            .catch((e) => {
-                setApiError(e);
+            .catch(() => {
+                setApiError(true);
             });
     }
 
@@ -123,7 +123,7 @@ export default function Register() {
                 </form>
                 {apiError && (
                 <span className="form__error-msg">
-                    An error occured. Please try again later
+                    Email already in use
                 </span>
                 )}
             </div>

@@ -1,14 +1,32 @@
 import "./Login.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useFormWithValidation } from "../../hooks/useFormWithValidation";
+import { loginUser } from "../../utils/api";
+import { useAuth } from "../../contexts/AuthContext";
+import { useState } from "react";
 
 export default function Login() {
     const { values, errors, isValid, handleChange } = useFormWithValidation();
+    const [apiError, setApiError] = useState<boolean>(false);
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
     function handleSubmit(e: React.SubmitEvent) {
         e.preventDefault();
+        setApiError(false);
         if (!isValid) return;
-        console.log(values);
+        loginUser(values.email, values.password)
+            .then((res) => {
+                if (res.success) {
+                    const token = res.data!.token;
+                    const user = res.data!.user;
+                    login(token, user);
+                    navigate("/knowledge");
+                }
+            })
+            .catch((e) => {
+                setApiError(true)
+            });
     }
 
     function getNavLinkClass({ isActive }: { isActive: boolean }) {
@@ -89,6 +107,11 @@ export default function Login() {
                         Login
                     </button>
                 </form>
+                {apiError && (
+                <span className="form__error-msg">
+                    An error occured. Please try again later
+                </span>
+                )}
             </div>
         </div>
     );
