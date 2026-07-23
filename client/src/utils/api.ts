@@ -1,4 +1,8 @@
+import type { CurrentUser } from "../types";
+
 const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+const BASE_URL = "http://localhost:3000";
 
 export type KnowledgeDoc = {
   _id: string;
@@ -27,6 +31,39 @@ export type ApiResponse<T> = {
   success: boolean;
   data: T | null;
   error: { message: string } | null;
+};
+
+export const request = async <T>(
+  path: string,
+  options: RequestInit = {},
+): Promise<ApiResponse<T>> => {
+  const token = localStorage.getItem("auth-token") ?? "";
+
+  const res = await fetch(path, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer: ${token}`,
+      ...options.headers,
+    },
+  });
+
+  if (res.status === 401) {
+    const body = await res.json().catch(() => null);
+    const message = body?.error?.message || "Invalid credentials";
+    if (localStorage.getItem("auth-token")) {
+      localStorage.removeItem("auth-token");
+      window.location.href = "/login";
+    }
+    throw new Error(message);
+  }
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error?.message || "Request failed");
+  }
+
+  return res.json();
 };
 
 export const getDocuments = async (): Promise<ApiResponse<KnowledgeDoc[]>> => {
@@ -246,4 +283,22 @@ export const sendMessage = async (
     },
     error: null,
   };
+};
+
+export const getCurrentUser = async () => {
+  return request<{ user: CurrentUser}>(`${BASE_URL}/users/me`);
+};
+
+export const loginUser = async (email: string, password: string) => {
+  return request<{ token: string; user: CurrentUser}>(`${BASE_URL}/auth/login`, {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  });
+}
+
+export const registerUser = async (name: string, email: string, password: string) => {
+  return request<{ user: CurrentUser}>(`${BASE_URL}/auth/register`, {
+    method: "POST",
+    body: JSON.stringify({email, password, name}),
+  });
 };
