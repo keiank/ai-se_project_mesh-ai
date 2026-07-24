@@ -5,6 +5,7 @@ import { getCurrentUser } from "../utils/api";
 type AuthContextValue = {
     currentUser: CurrentUser | null;
     isAuthenticated: boolean;
+    isLoading: boolean;
     login: (token: string, user: CurrentUser) => void;
     logout: () => void;
 }
@@ -12,6 +13,7 @@ type AuthContextValue = {
 export const AuthContext = createContext<AuthContextValue>({
     currentUser: null,
     isAuthenticated: false,
+    isLoading: false,
     login: () => {},
     logout: () => {},
 });
@@ -55,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ currentUser, isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ currentUser, isAuthenticated, isLoading, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
