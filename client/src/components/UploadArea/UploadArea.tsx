@@ -2,9 +2,10 @@ import "./UploadArea.css";
 
 type Props = {
   onFileSelect: (file: File) => void;
+  isUploading: boolean;
 };
 
-export default function UploadArea({ onFileSelect }: Props) {
+export default function UploadArea({ onFileSelect, isUploading }: Props) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) onFileSelect(file);
@@ -47,9 +48,11 @@ export default function UploadArea({ onFileSelect }: Props) {
           accept=".pdf"
           className="upload-area__input"
           onChange={handleChange}
+          disabled={isUploading}
         />
       </label>
       <span className="mobile-label">Upload</span>
+      {isUploading && <p>Uploading...</p>}
     </div>
   );
 }

@@ -67,42 +67,30 @@ export const request = async <T>(
 };
 
 export const getDocuments = async (): Promise<ApiResponse<KnowledgeDoc[]>> => {
-  await delay(700);
-  return {
-    success: true,
-    data: [
-      {
-        _id: "1",
-        title: "Code Review Guidelines",
-        fileName: "code-review-guidelines.pdf",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-      {
-        _id: "2",
-        title: "API Reference",
-        fileName: "api-reference.pdf",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-      {
-        _id: "3",
-        title: "Onboarding Guide",
-        fileName: "onboarding-guide.pdf",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-      {
-        _id: "4",
-        title: "Code of Conduct",
-        fileName: "code_of_conduct.pdf",
-        userId: "u1",
-        createdAt: new Date().toISOString(),
-      },
-    ],
-    error: null,
-  };
+  return request<KnowledgeDoc[]>(`${BASE_URL}/documents`);
 };
+
+export const uploadDocument = async (file: File): Promise<ApiResponse<KnowledgeDoc>> => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const token = localStorage.getItem("auth-token") ?? "";
+
+  const res = await fetch(`${BASE_URL}/documents`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error?.message || "Request failed");
+  }
+
+  return res.json();
+}
 
 export const getChats = async (): Promise<ApiResponse<Chat[]>> => {
   await delay(700);
@@ -286,7 +274,7 @@ export const sendMessage = async (
 };
 
 export const getCurrentUser = async () => {
-  return request<{ user: CurrentUser}>(`${BASE_URL}/users/me`);
+  return request<{ user: CurrentUser}>(`${BASE_URL}/auth/me`);
 };
 
 export const loginUser = async (email: string, password: string) => {

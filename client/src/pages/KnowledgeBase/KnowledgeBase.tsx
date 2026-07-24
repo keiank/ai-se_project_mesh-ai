@@ -1,23 +1,35 @@
 import "./KnowledgeBase.css";
+import Delete from "../../assets/Delete.svg";
 import { useState, useEffect } from "react";
 import UploadArea from "../../components/UploadArea/UploadArea";
 import { getDocuments, type KnowledgeDoc } from "../../utils/api";
-import Delete from "../../assets/Delete.svg";
+import { uploadDocument } from "../../utils/api";
 
 export default function KnowledgeBase() {
     const [documents, setDocuments] = useState<KnowledgeDoc[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isUploading, setIsUploading] = useState(false);
 
-    const handleFileSelect = (file: File) => {
-        const newDoc: KnowledgeDoc = {
-            _id: Date.now().toString(),
-            title: file.name,
-            fileName: file.name,
-            userId: 'local',
-            createdAt: new Date().toISOString(), 
-        };
-        setDocuments([newDoc, ...documents]);
+    const handleFileSelect = async (file: File) => {
+        setIsUploading(true);
+        try {
+            const res = await uploadDocument(file);
+            if (res.data) {
+                const newDoc: KnowledgeDoc = {
+                    _id: Date.now().toString(),
+                    title: file.name,
+                    fileName: file.name,
+                    userId: 'local',
+                    createdAt: new Date().toISOString(), 
+                };
+                setDocuments([newDoc, ...documents]);
+            }
+        } catch {
+            setError("Unable to upload document");
+        } finally {
+            setIsUploading(false);
+        }
     };
 
     useEffect(() => {
@@ -42,7 +54,7 @@ export default function KnowledgeBase() {
             <h1>Manage Your Knowledge Base</h1>
             <section className="knowledge-base__content">
                 <p className="knowledge-base__upload-label">Upload documents (PDF)</p>
-                <UploadArea onFileSelect={handleFileSelect}/>
+                <UploadArea onFileSelect={handleFileSelect} isUploading={isUploading} />
                 <ul
                 className="knowledge-base__document-list">
                     {isLoading && (
@@ -66,7 +78,6 @@ export default function KnowledgeBase() {
                                 </span>);
                         })
                     )}</ul>
-                <button className="knowledge-base__btn-save">Save</button>
             </section>
         </div>);
 }
