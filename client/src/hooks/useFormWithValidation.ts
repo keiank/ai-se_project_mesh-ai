@@ -4,7 +4,11 @@ type FormValues = Record<string, string>;
 type FormErrors = Record<string, string>;
 
 export function useFormWithValidation() {
-    const [values, setValues] = useState<FormValues>({});
+    const [values, setValues] = useState<FormValues>({
+        email: "",
+        password: "",
+        name: "",
+    });
     const [errors, setErrors] = useState<FormErrors>({});
     const [isValid, setIsValid] = useState(false);
 
