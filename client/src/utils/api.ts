@@ -2,7 +2,7 @@ import type { CurrentUser } from "../types";
 
 const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "/api";
 
 export type KnowledgeDoc = {
   _id: string;
