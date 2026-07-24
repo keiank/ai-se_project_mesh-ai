@@ -43,7 +43,7 @@ export const request = async <T>(
     ...options,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer: ${token}`,
+      Authorization: `Bearer ${token}`,
       ...options.headers,
     },
   });
