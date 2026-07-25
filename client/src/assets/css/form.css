@@ -88,6 +88,7 @@
     border: 1px solid #9679D933;
     font-size: 18px;
     font-weight: 500;
+    color: black;
     text-decoration: none;
     width: calc(100% / 2);
 }
