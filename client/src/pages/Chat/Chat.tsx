@@ -99,7 +99,10 @@ export default function Chat() {
         try {
             const res = await sendMessage(activeChatId, text);
             if (res.data) {
-                setMessages((prev) => [...prev, res.data!]);
+                setMessages((prev) => [
+                    ...prev.filter((m) => m._id !== userMessage._id),
+                    ...res.data!,
+                ]);
             }
         } catch {
             const errorMessage: Message = {
@@ -232,6 +235,11 @@ export default function Chat() {
                                     }
                                 </li>
                             ))}
+                            {isSending && (
+                                <li className="chat__message chat__message_assistant chat__message_thinking">
+                                    Thinking...
+                                </li>
+                            )}
                         </ul>
                         <div className="chat__input-bar">
                             <textarea

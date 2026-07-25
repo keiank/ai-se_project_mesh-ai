@@ -5,7 +5,7 @@ import Chat from '../models/chat.js';
 import Message from '../models/message.js';
 import { createEmbedding } from '../utils/embeddings.js';
 import { rankBySimilarity } from '../utils/vector-search.js';
-import { buildContext, getClient, LLM_MODEL } from '../utils/openai-client.js';
+import { buildContext, getClient, stripThinking, LLM_MODEL } from '../utils/openai-client.js';
 
 /**
  * Perform RAG pipeline, creating a message, associating
@@ -70,7 +70,7 @@ export const createMessage = async (req: Request, res: Response): Promise<void> 
     temperature: 0.2,
   });
 
-  const answer = response.choices[0]!.message.content ?? 'No answer returned.';
+  const answer = stripThinking(response.choices[0]!.message.content ?? 'No answer returned.');
 
   const userMessage = await Message.create({
     chatId: chat._id,

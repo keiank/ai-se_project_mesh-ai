@@ -3,8 +3,7 @@ import Chunk from '../models/chunk.js';
 import Document from '../models/document.js';
 import { createEmbedding } from '../utils/embeddings.js';
 import { rankBySimilarity } from '../utils/vector-search.js';
-import { buildContext, getClient, LLM_MODEL } from '../utils/openai-client.js';
-
+import { buildContext, getClient, stripThinking, LLM_MODEL } from '../utils/openai-client.js';
 
 /**
  * Handle a user's question, returning an answer.
@@ -60,7 +59,7 @@ async function queryDocuments(req: Request, res: Response) {
     temperature: 0.2,
   });
 
-  const answer = response.choices[0]!.message.content ?? 'No answer returned.';
+  const answer = stripThinking(response.choices[0]!.message.content ?? 'No answer returned.');
 
   res.status(200).json({
     success: true,
