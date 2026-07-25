@@ -1,5 +1,5 @@
 import "./Chat.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Message } from "../../utils/api";
 import { getChats, createChat, getChat, sendMessage } from "../../utils/api";
 import type { Chat as ChatType } from "../../utils/api";
@@ -29,6 +29,8 @@ export default function Chat() {
     const [isSending, setIsSending] = useState<boolean>(false);
 
     const { isMobileMenuOpen, setIsMobileMenuOpen } = useOutletContext<MobileContext>();
+
+    const messagesEndRef = useRef<HTMLLIElement>(null);
 
     useEffect(() => {
         const load = async () => {
@@ -63,6 +65,10 @@ export default function Chat() {
 
         load();
     }, [activeChatId]);
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages])
 
     const handleCreateChat = async () => {
         const title = newChatTitle.trim() || 'New Chat';
@@ -240,6 +246,7 @@ export default function Chat() {
                                     Thinking...
                                 </li>
                             )}
+                            <li ref={messagesEndRef} />
                         </ul>
                         <div className="chat__input-bar">
                             <textarea
