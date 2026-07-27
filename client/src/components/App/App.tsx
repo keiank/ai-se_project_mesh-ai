@@ -18,10 +18,10 @@ function App() {
             <Route path="/knowledge" element={<KnowledgeBase />}/>
             <Route path="/chat" element={<Chat />}/>
           </Route>
-        </Route>
-        <Route element={<PublicRoute />}>
-          <Route path="/login" element={<Login />}/>
-          <Route path="/register" element={<Register />}/>
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<Login />}/>
+            <Route path="/register" element={<Register />}/>
+          </Route>
         </Route>
       </Routes>
     </div>
