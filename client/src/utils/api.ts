@@ -1,7 +1,5 @@
 import type { CurrentUser } from "../types";
 
-const delay = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
-
 const BASE_URL = "/api";
 
 export type KnowledgeDoc = {
@@ -83,6 +81,32 @@ export const uploadDocument = async (file: File): Promise<ApiResponse<KnowledgeD
     },
     body: formData,
   });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.error?.message || "Request failed");
+  }
+
+  return res.json();
+}
+
+export const deleteDocument = async (doc: KnowledgeDoc, user: CurrentUser | null): Promise<ApiResponse<KnowledgeDoc>> => {
+  if (!user) {
+    throw new Error("Must be logged in");
+  }
+
+  const token = localStorage.getItem("auth-token") ?? "";
+  const res = await fetch(`${BASE_URL}/documents/${doc._id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ user }),
+  });
+
+  if (res.status === 404) {
+    throw new Error("Document does not exist");
+  }
 
   if (!res.ok) {
     const body = await res.json().catch(() => null);

@@ -41,15 +41,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setIsLoading(false);
             return;
         }
+
         getCurrentUser()
             .then((res) => {
                 if (res.data) {
-                    setCurrentUser(res.data.user);
+                    setCurrentUser(res.data);
                     setIsAuthenticated(true);
+                } else {
+                    setCurrentUser(null);
+                    setIsAuthenticated(false);
                 }
             })
             .catch(() => {
                 localStorage.removeItem('auth-token');
+                setCurrentUser(null);
+                setIsAuthenticated(false);
             })
             .finally(() => {
                 setIsLoading(false);

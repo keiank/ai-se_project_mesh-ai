@@ -5,6 +5,7 @@ import { readFileSync } from 'fs';
 import { PDFParse } from 'pdf-parse';
 import { chunkText } from '../utils/chunk.js';
 import { createEmbedding } from '../utils/embeddings.js';
+import mongoose from 'mongoose';
 
 /**
  * Handle document upload.
@@ -77,10 +78,11 @@ async function getDocuments(req: Request, res: Response): Promise<void> {
  * @returns {Promise<void>}
  */
 async function getDocumentById(req: Request, res: Response): Promise<void> {
-  const documentId = req.params.id;
+  const documentId = new mongoose.Types.ObjectId(req.params.id as string);
+  const userId = new mongoose.Types.ObjectId(req.user!.userId as string);
   // Should only be able to get documents
   // of the current logged-in user.
-    const document = await Document.findOne({ _id: documentId, userId: req.user!.userId });
+  const document = await Document.findOne({ _id: documentId, userId });
   if (!document) {
     res.status(400).json({
       success: false,
@@ -89,7 +91,6 @@ async function getDocumentById(req: Request, res: Response): Promise<void> {
     });
     return;
   }
-
   res.status(200).json({
     success: true,
     data: document,
@@ -105,20 +106,20 @@ async function getDocumentById(req: Request, res: Response): Promise<void> {
  * @returns {Promise<void>}
  */
 async function deleteDocumentById(req: Request, res: Response): Promise<void> {
-  const documentId = req.params.id;
+  const documentId = new mongoose.Types.ObjectId(req.params.id as string);
+  const userId = new mongoose.Types.ObjectId(req.user!.userId as string);
   // Should only be able to delete documents
   // of the current logged-in user.
-  const document = await Document.findOneAndDelete({ id_: documentId, userId: req.user!.userId });
+  const document = await Document.findOneAndDelete({ _id: documentId, userId });
   if (!document) {
-    res.status(400).json({
+    res.status(404).json({
       success: false,
       data: null,
       error: { message: 'Document does not exist' },
     });
     return;
   }
-
-  res.status(204).json({
+  res.status(200).json({
     success: true,
     data: document,
     error: null,

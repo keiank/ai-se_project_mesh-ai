@@ -3,20 +3,26 @@ import Delete from "../../assets/Delete.svg";
 import { useState, useEffect } from "react";
 import UploadArea from "../../components/UploadArea/UploadArea";
 import { getDocuments, type KnowledgeDoc } from "../../utils/api";
-import { uploadDocument } from "../../utils/api";
+import { uploadDocument, deleteDocument } from "../../utils/api";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function KnowledgeBase() {
     const [documents, setDocuments] = useState<KnowledgeDoc[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isUploading, setIsUploading] = useState(false);
+    const { currentUser } = useAuth();
 
     const handleFileSelect = async (file: File) => {
         setIsUploading(true);
+        setError(null);
         try {
+            if (file.size === 0) {
+                throw new Error("Please provide a non-empty PDF");
+            }
             const res = await uploadDocument(file);
             if (res.data) {
-                setDocuments([res.data, ...documents]);
+                setDocuments((prev) => [res.data!, ...prev]);
             }
         } catch {
             setError("Unable to upload document");
@@ -25,8 +31,21 @@ export default function KnowledgeBase() {
         }
     };
 
+    const handleDeleteDoc = async (doc: KnowledgeDoc) => {
+        setError(null);
+        try {
+            const res = await deleteDocument(doc, currentUser);
+            if (res.data) {
+                setDocuments((prev) => prev.filter((d) => d._id !== doc._id));
+            }
+        } catch {
+            setError("Unable to delete document");
+        }
+    }
+
     useEffect(() => {
         const load = async () => {
+            setError(null);
             try {
                 const res = await getDocuments();
                 setDocuments(res?.data || []);
@@ -54,7 +73,7 @@ export default function KnowledgeBase() {
                         <p className="knowledge-base__document-list_message">Loading...</p>
                     )}
                     {!isLoading && error && (
-                        <p className="knowledge-base__document-list_error knowledge-base__document-list_message">Failed to load documents.</p>
+                        <p className="knowledge-base__document-list_error knowledge-base__document-list_message">{error}</p>
                     )}
                     {!isLoading && !error && documents.length === 0 && (
                         <p className="knowledge-base__document-list_message">No documents yet.</p>
@@ -65,7 +84,8 @@ export default function KnowledgeBase() {
                                 {d.fileName}
                                 <button
                                 className="knowledge-base__document_delete-btn"
-                                aria-label="Delete document button">
+                                aria-label="Delete document button"
+                                onClick={() => handleDeleteDoc(d)}>
                                     <img src={Delete}></img>
                                 </button>
                                 </span>);
