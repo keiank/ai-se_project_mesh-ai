@@ -78,8 +78,9 @@ async function getDocuments(req: Request, res: Response): Promise<void> {
  */
 async function getDocumentById(req: Request, res: Response): Promise<void> {
   const documentId = req.params.id;
-
-  const document = await Document.findById(documentId);
+  // Should only be able to get documents
+  // of the current logged-in user.
+    const document = await Document.findOne({ _id: documentId, userId: req.user!.userId });
   if (!document) {
     res.status(400).json({
       success: false,
@@ -105,8 +106,9 @@ async function getDocumentById(req: Request, res: Response): Promise<void> {
  */
 async function deleteDocumentById(req: Request, res: Response): Promise<void> {
   const documentId = req.params.id;
-
-  const document = await Document.findByIdAndDelete(documentId);
+  // Should only be able to delete documents
+  // of the current logged-in user.
+  const document = await Document.findOneAndDelete({ id_: documentId, userId: req.user!.userId });
   if (!document) {
     res.status(400).json({
       success: false,
