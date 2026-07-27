@@ -16,14 +16,7 @@ export default function KnowledgeBase() {
         try {
             const res = await uploadDocument(file);
             if (res.data) {
-                const newDoc: KnowledgeDoc = {
-                    _id: Date.now().toString(),
-                    title: file.name,
-                    fileName: file.name,
-                    userId: 'local',
-                    createdAt: new Date().toISOString(), 
-                };
-                setDocuments([newDoc, ...documents]);
+                setDocuments([res.data, ...documents]);
             }
         } catch {
             setError("Unable to upload document");
