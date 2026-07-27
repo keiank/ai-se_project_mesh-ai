@@ -13,6 +13,7 @@ export default function UploadArea({ onFileSelect, isUploading }: Props) {
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
+    if (isUploading) return;
     const file = e.dataTransfer.files?.[0];
     if (file) onFileSelect(file);
   };
