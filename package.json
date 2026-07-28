@@ -5,6 +5,10 @@
         "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\""
     },
     "devDependencies": {
+        "@types/morgan": "^1.9.10",
         "concurrently": "^10.0.3"
+    },
+    "dependencies": {
+        "morgan": "^1.11.0"
     }
 }
