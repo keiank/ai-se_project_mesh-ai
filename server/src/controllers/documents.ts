@@ -6,6 +6,7 @@ import { PDFParse } from 'pdf-parse';
 import { chunkText } from '../utils/chunk.js';
 import { createEmbedding } from '../utils/embeddings.js';
 import mongoose from 'mongoose';
+import { deleteCacheValue, getCacheValue, setCacheValue } from '../utils/cache.js';
 
 /**
  * Handle document upload.
@@ -38,7 +39,12 @@ async function uploadDocument(req: Request, res: Response): Promise<void> {
       fileName: req.file.originalname,
       userId: req.user!.userId
     });
-  
+
+  // invalidate cache when new document is created
+  // to force fresh retrieval of entire document list
+  const cacheKey = `documents-list:${req.user!.userId}`;
+  deleteCacheValue(cacheKey);
+
   await Promise.all(
     chunks.map(async (chunk) => {
       const embedding = await createEmbedding(chunk);
@@ -61,13 +67,20 @@ async function uploadDocument(req: Request, res: Response): Promise<void> {
  * @returns {Promise<void>}
  */
 async function getDocuments(req: Request, res: Response): Promise<void> {
+  const cacheKey = `documents-list:${req.user!.userId}`;
+  const cached = getCacheValue(cacheKey);
+
+  if (cached) {
+    res.status(200).json(cached);
+    return;
+  }
+  
   const documents = await Document.find({ userId: req.user!.userId });
   
-  res.status(200).json({
-    success: true,
-    data: documents,
-    error: null,
-  });
+  const responseData = { data: documents };
+  setCacheValue(cacheKey, responseData, 30 * 1000);
+
+  res.status(200).json(responseData);
 }
 
 /**
@@ -119,6 +132,12 @@ async function deleteDocumentById(req: Request, res: Response): Promise<void> {
     });
     return;
   }
+
+  // invalidate cache when new document is created
+  // to force fresh retrieval of entire document list
+  const cacheKey = `documents-list:${req.user!.userId}`;
+  deleteCacheValue(cacheKey);
+
   res.status(200).json({
     success: true,
     data: document,
