@@ -9,6 +9,7 @@
         "concurrently": "^10.0.3"
     },
     "dependencies": {
+        "express-rate-limit": "^8.6.1",
         "morgan": "^1.11.0",
         "winston": "^3.19.0"
     }
