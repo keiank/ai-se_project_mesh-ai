@@ -3,9 +3,12 @@ dotenv.config();
 import mongoose from 'mongoose';
 import express from 'express';
 import router from './routes/index.js';
-import { logger } from './middleware/logger.js';
+import { requestLogger } from './middleware/logger.js';
 import { errorHandler, notFoundHandler } from './middleware/error.js';
 import cors from "cors";
+import { logger } from './utils/logger.js';
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -13,7 +16,7 @@ const port = process.env.PORT || 3000;
 // middleware
 app.use(cors({ origin: /^http:\/\/localhost(:\d+)?$/ }));
 app.use(express.json());
-app.use(logger);
+app.use(requestLogger);
 
 // routes
 app.get('/health', (_req, res) => {
@@ -32,10 +35,26 @@ app.use(errorHandler);
 
 mongoose.connect(process.env.MONGO_URI!)
   .then(() => {
-    console.log('MongoDB connected');
-    app.listen(port, () => console.log(`Server listening on port ${port}`))
+    logger.info('MongoDB connected');
+    app.listen(port, () => {
+      logger.info('Server started', { port: port, env: process.env.NODE_ENV });
+      if (isProduction) {
+        logger.info(
+          JSON.stringify({
+            event: 'server-start',
+            port: port,
+            env: process.env.NODE_ENV
+          })
+        );
+      } else {
+        logger.info(
+          `[dev] Server running on port ${port}`
+        );
+      }
+    });
   })
   .catch((err) => {
-    console.error('Connection error', err);
-  })
+    logger.error(`MongoDB connection error ${err}`);
+    process.exit(1);
+  });
 

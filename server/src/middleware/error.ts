@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
+import { logger } from '../utils/logger.js';
 
 /**
  * Middleware that handles requests to unknown routes.
@@ -33,7 +34,7 @@ function errorHandler(
   res: Response,
   next: NextFunction,
 ): void {
-  console.log(err);
+  logger.error(err.message, { stack: err.stack });
 
   const statusCode = err.statusCode ?? 500;
   const message =
