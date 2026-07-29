@@ -5,7 +5,6 @@ type CacheEntry = {
 };
 
 const cache = new Map<string, CacheEntry>();
-const TTL_MS = 60 * 1000;
 
 export const getCacheValue = (key: string): unknown => {
     const entry = cache.get(key);
