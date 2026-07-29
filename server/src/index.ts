@@ -19,6 +19,7 @@ app.use(express.json());
 app.use(requestLogger);
 
 // routes
+app.set('trust proxy', 1);
 app.get('/health', (_req, res) => {
   res.status(200).json({
     success: true,
