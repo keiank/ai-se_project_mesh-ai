@@ -24,7 +24,7 @@ export default function Login() {
                     navigate("/knowledge");
                 }
             })
-            .catch((e) => {
+            .catch(() => {
                 setApiError(true)
             });
     }

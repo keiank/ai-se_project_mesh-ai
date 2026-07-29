@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         getCurrentUser()
             .then((res) => {
                 if (res.data) {
-                    setCurrentUser(res.data);
+                    setCurrentUser(res.data.user);
                     setIsAuthenticated(true);
                 } else {
                     setCurrentUser(null);
